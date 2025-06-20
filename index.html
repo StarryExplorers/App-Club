@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💬 App Club - Spark's App Hub</title>
+  <meta name="theme-color" content="#fdf6e3">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fdf6e3;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #e07a5f;
+    }
+    .group {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .group h2 {
+      margin-top: 0;
+      color: #457b9d;
+    }
+    .message-box {
+      margin-top: 10px;
+    }
+    .message-box input,
+    .message-box textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .message-box button {
+      padding: 10px 15px;
+      background-color: #2aa198;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .messages {
+      margin-top: 15px;
+      border-top: 1px solid #ddd;
+      padding-top: 10px;
+    }
+    .comment {
+      margin-bottom: 10px;
+      background: #fefefe;
+      padding: 10px;
+      border-radius: 6px;
+      border-left: 4px solid #29a19c;
+    }
+    .rating {
+      margin: 10px 0;
+    }
+    .rating span {
+      cursor: pointer;
+      font-size: 1.5em;
+      color: gold;
+    }
+    .reply {
+      margin-left: 20px;
+      font-size: 0.9em;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>💬 App Club</h1>
+  <p style="text-align:center;">Welcome to the chat zone! Choose an app below to talk, rate, and connect! 🌟</p>
+
+  <div class="group" id="group-Numlin">
+    <h2>🔤 Numlin Translator</h2>
+    <div class="rating" data-app="Numlin Translator">
+      <span onclick="rateApp(this, 1)">☆</span>
+      <span onclick="rateApp(this, 2)">☆</span>
+      <span onclick="rateApp(this, 3)">☆</span>
+      <span onclick="rateApp(this, 4)">☆</span>
+      <span onclick="rateApp(this, 5)">☆</span>
+    </div>
+    <div class="message-box">
+      <input type="text" placeholder="Your name" id="name-Numlin">
+      <textarea placeholder="Write your comment..." id="comment-Numlin"></textarea>
+      <button onclick="postComment('Numlin')">Post</button>
+    </div>
+    <div class="messages" id="messages-Numlin"></div>
+  </div>
+
+  <!-- Repeat for other apps -->
+  <div class="group" id="group-Calculator">
+    <h2>🧮 Talking Calculator</h2>
+    <div class="rating" data-app="Talking Calculator">
+      <span onclick="rateApp(this, 1)">☆</span>
+      <span onclick="rateApp(this, 2)">☆</span>
+      <span onclick="rateApp(this, 3)">☆</span>
+      <span onclick="rateApp(this, 4)">☆</span>
+      <span onclick="rateApp(this, 5)">☆</span>
+    </div>
+    <div class="message-box">
+      <input type="text" placeholder="Your name" id="name-Calculator">
+      <textarea placeholder="Write your comment..." id="comment-Calculator"></textarea>
+      <button onclick="postComment('Calculator')">Post</button>
+    </div>
+    <div class="messages" id="messages-Calculator"></div>
+  </div>
+
+  <!-- More groups can be added here -->
+
+  <script>
+    const comments = {};
+
+    function postComment(appId) {
+      const name = document.getElementById(`name-${appId}`).value;
+      const text = document.getElementById(`comment-${appId}`).value;
+      if (!comments[appId]) comments[appId] = [];
+      comments[appId].push({ name, text });
+      displayComments(appId);
+      document.getElementById(`comment-${appId}`).value = "";
+    }
+
+    function displayComments(appId) {
+      const container = document.getElementById(`messages-${appId}`);
+      container.innerHTML = "";
+      comments[appId].forEach(c => {
+        const div = document.createElement("div");
+        div.className = "comment";
+        div.innerHTML = `<strong>${c.name}</strong>: ${c.text}`;
+        container.appendChild(div);
+      });
+    }
+
+    function rateApp(star, rating) {
+      const parent = star.parentElement;
+      Array.from(parent.children).forEach((s, i) => {
+        s.textContent = i < rating ? "★" : "☆";
+      });
+    }
+  </script>
+</body>
+</html
