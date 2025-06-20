@@ -124,6 +124,40 @@
     <div class="messages" id="messages-Calculator"></div>
   </div>
 
+  <div class="group" id="group-Converter">
+    <h2>🌡 Temperature Converter</h2>
+    <div class="rating" data-app="Temperature Converter">
+      <span onclick="rateApp(this, 1)">☆</span>
+      <span onclick="rateApp(this, 2)">☆</span>
+      <span onclick="rateApp(this, 3)">☆</span>
+      <span onclick="rateApp(this, 4)">☆</span>
+      <span onclick="rateApp(this, 5)">☆</span>
+    </div>
+    <div class="message-box">
+      <input type="text" placeholder="Your name" id="name-Converter">
+      <textarea placeholder="Write your comment..." id="comment-Converter"></textarea>
+      <button onclick="postComment('Converter')">Post</button>
+    </div>
+    <div class="messages" id="messages-Converter"></div>
+  </div>
+
+  <div class="group" id="group-RePix">
+    <h2>RePix</h2>
+    <div class="rating" data-app="RePix">
+      <span onclick="rateApp(this, 1)">☆</span>
+      <span onclick="rateApp(this, 2)">☆</span>
+      <span onclick="rateApp(this, 3)">☆</span>
+      <span onclick="rateApp(this, 4)">☆</span>
+      <span onclick="rateApp(this, 5)">☆</span>
+    </div>
+    <div class="message-box">
+      <input type="text" placeholder="Your name" id="name-RePix">
+      <textarea placeholder="Write your comment..." id="comment-RePix"></textarea>
+      <button onclick="postComment('RePix')">Post</button>
+    </div>
+    <div class="messages" id="messages-RePix"></div>
+  </div>
+
   <script>
     const comments = {};
 
