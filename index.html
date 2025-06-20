@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>💬 App Club - Spark's App Hub</title>
   <meta name="theme-color" content="#fdf6e3">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -86,99 +87,40 @@
 </head>
 <body>
   <h1>💬 App Club</h1>
-  <p style="text-align:center;">Welcome to the chat zone! Choose an app below to talk, rate, and connect! 🌟</p>
-
+  <p style="text-align:center;">Welcome to the chat zone! Choose an app below to talk, rate, and connect! ✨</p>
   <input type="text" id="searchBar" placeholder="🔍 Search an app group..." oninput="filterGroups()">
-
-  <div class="group" id="group-Numlin">
-    <h2>🔤 Numlin Translator</h2>
-    <div class="rating" data-app="Numlin Translator">
-      <span onclick="rateApp(this, 1)">☆</span>
-      <span onclick="rateApp(this, 2)">☆</span>
-      <span onclick="rateApp(this, 3)">☆</span>
-      <span onclick="rateApp(this, 4)">☆</span>
-      <span onclick="rateApp(this, 5)">☆</span>
-    </div>
-    <div class="message-box">
-      <input type="text" placeholder="Your name" id="name-Numlin">
-      <textarea placeholder="Write your comment..." id="comment-Numlin"></textarea>
-      <button onclick="postComment('Numlin')">Post</button>
-    </div>
-    <div class="messages" id="messages-Numlin"></div>
-  </div>
-
-  <div class="group" id="group-Calculator">
-    <h2>🧮 Talking Calculator</h2>
-    <div class="rating" data-app="Talking Calculator">
-      <span onclick="rateApp(this, 1)">☆</span>
-      <span onclick="rateApp(this, 2)">☆</span>
-      <span onclick="rateApp(this, 3)">☆</span>
-      <span onclick="rateApp(this, 4)">☆</span>
-      <span onclick="rateApp(this, 5)">☆</span>
-    </div>
-    <div class="message-box">
-      <input type="text" placeholder="Your name" id="name-Calculator">
-      <textarea placeholder="Write your comment..." id="comment-Calculator"></textarea>
-      <button onclick="postComment('Calculator')">Post</button>
-    </div>
-    <div class="messages" id="messages-Calculator"></div>
-  </div>
-
-  <div class="group" id="group-Converter">
-    <h2>🌡 Temperature Converter</h2>
-    <div class="rating" data-app="Temperature Converter">
-      <span onclick="rateApp(this, 1)">☆</span>
-      <span onclick="rateApp(this, 2)">☆</span>
-      <span onclick="rateApp(this, 3)">☆</span>
-      <span onclick="rateApp(this, 4)">☆</span>
-      <span onclick="rateApp(this, 5)">☆</span>
-    </div>
-    <div class="message-box">
-      <input type="text" placeholder="Your name" id="name-Converter">
-      <textarea placeholder="Write your comment..." id="comment-Converter"></textarea>
-      <button onclick="postComment('Converter')">Post</button>
-    </div>
-    <div class="messages" id="messages-Converter"></div>
-  </div>
-
-  <div class="group" id="group-RePix">
-    <h2>RePix</h2>
-    <div class="rating" data-app="RePix">
-      <span onclick="rateApp(this, 1)">☆</span>
-      <span onclick="rateApp(this, 2)">☆</span>
-      <span onclick="rateApp(this, 3)">☆</span>
-      <span onclick="rateApp(this, 4)">☆</span>
-      <span onclick="rateApp(this, 5)">☆</span>
-    </div>
-    <div class="message-box">
-      <input type="text" placeholder="Your name" id="name-RePix">
-      <textarea placeholder="Write your comment..." id="comment-RePix"></textarea>
-      <button onclick="postComment('RePix')">Post</button>
-    </div>
-    <div class="messages" id="messages-RePix"></div>
+  <div id="appGroups">
+    <!-- App groups will be inserted here -->
   </div>
 
   <script>
-    const comments = {};
+    const supabase = supabase.createClient(
+      "https://cwzzydmtbcxegkptwhlb.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3enp5ZG10YmN4ZWdrcHR3aGxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0MjMzNjUsImV4cCI6MjA2NTk5OTM2NX0.0QybjNjCkC9T6x8iO9F44qo40SCcuuBcx4w0kJS_LPg"
+    );
 
-    function postComment(appId) {
-      const name = document.getElementById(`name-${appId}`).value;
-      const text = document.getElementById(`comment-${appId}`).value;
-      if (!comments[appId]) comments[appId] = [];
-      comments[appId].push({ name, text });
-      displayComments(appId);
-      document.getElementById(`comment-${appId}`).value = "";
-    }
+    const apps = ["Numlin", "Calculator", "Converter", "RePix"];
 
-    function displayComments(appId) {
+    async function loadComments(appId) {
+      const { data, error } = await supabase.from("comments").select("*").eq("app", appId);
       const container = document.getElementById(`messages-${appId}`);
       container.innerHTML = "";
-      comments[appId].forEach(c => {
-        const div = document.createElement("div");
-        div.className = "comment";
-        div.innerHTML = `<strong>${c.name}</strong>: ${c.text}`;
-        container.appendChild(div);
-      });
+      if (data) {
+        data.forEach(({ name, text }) => {
+          const div = document.createElement("div");
+          div.className = "comment";
+          div.innerHTML = `<strong>${name}</strong>: ${text}`;
+          container.appendChild(div);
+        });
+      }
+    }
+
+    async function postComment(appId) {
+      const name = document.getElementById(`name-${appId}`).value;
+      const text = document.getElementById(`comment-${appId}`).value;
+      await supabase.from("comments").insert([{ app: appId, name, text }]);
+      document.getElementById(`comment-${appId}`).value = "";
+      loadComments(appId);
     }
 
     function rateApp(star, rating) {
@@ -196,6 +138,38 @@
         group.style.display = title.includes(input) ? "block" : "none";
       });
     }
+
+    function createGroup(appId, title) {
+      const html = `
+        <div class="group" id="group-${appId}">
+          <h2>${title}</h2>
+          <div class="rating" data-app="${title}">
+            <span onclick="rateApp(this, 1)">☆</span>
+            <span onclick="rateApp(this, 2)">☆</span>
+            <span onclick="rateApp(this, 3)">☆</span>
+            <span onclick="rateApp(this, 4)">☆</span>
+            <span onclick="rateApp(this, 5)">☆</span>
+          </div>
+          <div class="message-box">
+            <input type="text" placeholder="Your name" id="name-${appId}">
+            <textarea placeholder="Write your comment..." id="comment-${appId}"></textarea>
+            <button onclick="postComment('${appId}')">Post</button>
+          </div>
+          <div class="messages" id="messages-${appId}"></div>
+        </div>`;
+      document.getElementById("appGroups").insertAdjacentHTML("beforeend", html);
+      loadComments(appId);
+    }
+
+    apps.forEach(appId => {
+      const title = {
+        Numlin: "🔤 Numlin Translator",
+        Calculator: "🧮 Talking Calculator",
+        Converter: "🌡 Temperature Converter",
+        RePix: "🖼 RePix"
+      }[appId];
+      createGroup(appId, title);
+    });
   </script>
 </body>
-      </html>
+    </html>
