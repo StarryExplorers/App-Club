@@ -17,6 +17,16 @@
       text-align: center;
       color: #e07a5f;
     }
+    #searchBar {
+      display: block;
+      margin: 0 auto 20px auto;
+      padding: 10px;
+      width: 90%;
+      max-width: 400px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
     .group {
       background: #fff;
       border-radius: 10px;
@@ -78,6 +88,8 @@
   <h1>💬 App Club</h1>
   <p style="text-align:center;">Welcome to the chat zone! Choose an app below to talk, rate, and connect! 🌟</p>
 
+  <input type="text" id="searchBar" placeholder="🔍 Search an app group..." oninput="filterGroups()">
+
   <div class="group" id="group-Numlin">
     <h2>🔤 Numlin Translator</h2>
     <div class="rating" data-app="Numlin Translator">
@@ -95,7 +107,6 @@
     <div class="messages" id="messages-Numlin"></div>
   </div>
 
-  <!-- Repeat for other apps -->
   <div class="group" id="group-Calculator">
     <h2>🧮 Talking Calculator</h2>
     <div class="rating" data-app="Talking Calculator">
@@ -112,42 +123,6 @@
     </div>
     <div class="messages" id="messages-Calculator"></div>
   </div>
-
-    <div class="group" id="group-Converter">
-    <h2>🌡Temperature Converter</h2>
-    <div class="rating" data-app="Talking Calculator">
-      <span onclick="rateApp(this, 1)">☆</span>
-      <span onclick="rateApp(this, 2)">☆</span>
-      <span onclick="rateApp(this, 3)">☆</span>
-      <span onclick="rateApp(this, 4)">☆</span>
-      <span onclick="rateApp(this, 5)">☆</span>
-    </div>
-    <div class="message-box">
-      <input type="text" placeholder="Your name" id="name-Converter">
-      <textarea placeholder="Write your comment..." id="comment-Converter"></textarea>
-      <button onclick="postComment('Converter')">Post</button>
-    </div>
-    <div class="messages" id="messages-Converter"></div>
-    </div>
-
-    <div class="group" id="group-RePix">
-    <h2>RePix</h2>
-    <div class="rating" data-app="RePix">
-      <span onclick="rateApp(this, 1)">☆</span>
-      <span onclick="rateApp(this, 2)">☆</span>
-      <span onclick="rateApp(this, 3)">☆</span>
-      <span onclick="rateApp(this, 4)">☆</span>
-      <span onclick="rateApp(this, 5)">☆</span>
-    </div>
-    <div class="message-box">
-      <input type="text" placeholder="Your name" id="name-RePix">
-      <textarea placeholder="Write your comment..." id="comment-RePix"></textarea>
-      <button onclick="postComment('RePix')">Post</button>
-    </div>
-    <div class="messages" id="messages-RePix"></div>
-  </div>
-
-  <!-- More groups can be added here -->
 
   <script>
     const comments = {};
@@ -178,6 +153,15 @@
         s.textContent = i < rating ? "★" : "☆";
       });
     }
+
+    function filterGroups() {
+      const input = document.getElementById("searchBar").value.toLowerCase();
+      const groups = document.querySelectorAll(".group");
+      groups.forEach(group => {
+        const title = group.querySelector("h2").textContent.toLowerCase();
+        group.style.display = title.includes(input) ? "block" : "none";
+      });
+    }
   </script>
 </body>
-</html
+      </html>
